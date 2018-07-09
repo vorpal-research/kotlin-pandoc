@@ -4,18 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import ru.spbstu.ktuples.Tuple2
 import ru.spbstu.ktuples.Tuple3
 
-interface ToString {
-    override fun toString(): String
-}
-class DataObject : ToString {
-    override fun toString(): String = this::class.simpleName!!
-}
-
 data class Pandoc constructor(
-        val meta: Map<String, MetaValue>,
         val blocks: List<Block>,
         @JsonProperty("pandoc-api-version")
-        val apiVersion: List<Int>
+        val apiVersion: List<Int>,
+        val meta: Map<String, MetaValue>
 )
 sealed class MetaValue {
     data class MetaMap(val map: Map<String, MetaValue>): MetaValue()
