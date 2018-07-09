@@ -163,13 +163,4 @@ class ModelTest {
         println(pd)
 
     }
-
-    fun <T> value(s: Class<*>): T = s.getConstructor().newInstance() as T
-
-    fun foo(): Any? = when { true -> value(ArrayList::class.java); else -> throw IllegalArgumentException() }
-
-    @Test
-    fun bug() {
-        foo()
-    }
 }
