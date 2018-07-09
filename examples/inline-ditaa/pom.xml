@@ -42,7 +42,7 @@
         <dependency>
             <groupId>com.github.belyaev-mikhail</groupId>
             <artifactId>kotlin-pandoc</artifactId>
-            <version>-SNAPSHOT</version>
+            <version>eb31783259</version>
         </dependency>
     </dependencies>
 

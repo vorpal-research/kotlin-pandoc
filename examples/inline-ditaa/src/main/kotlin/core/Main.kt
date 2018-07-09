@@ -1,5 +1,6 @@
 package core
 
+import org.stathissideris.ascii2image.core.ConversionOptions
 import org.stathissideris.ascii2image.core.RenderingOptions
 import org.stathissideris.ascii2image.graphics.BitmapRenderer
 import org.stathissideris.ascii2image.graphics.Diagram
@@ -14,16 +15,16 @@ import java.io.File
 import java.util.*
 import javax.imageio.ImageIO
 
-fun main(args: Array<String>)  = makeFilter(
+fun main(args: Array<String>) = makeFilter(
         object : PandocVisitor() {
             override fun visit(b: Block.CodeBlock): Block {
-                if(b.attr.v0 != "ditaa") return super.visit(b)
+                if("ditaa" !in b.attr.v1) return super.visit(b)
 
                 val grid = TextGrid()
                 grid.initialiseWithLines(b.text.lines().mapTo(ArrayList()){ StringBuilder(it) }, null)
-                val diag = Diagram(grid, null)
+                val diag = Diagram(grid, ConversionOptions())
 
-                val uuid = UUID.fromString(b.text)
+                val uuid = UUID.nameUUIDFromBytes(b.text.toByteArray())
                 val tmpName = "$uuid.png"
                 ImageIO.write(BitmapRenderer().renderToImage(
                         diag, RenderingOptions()), "png",

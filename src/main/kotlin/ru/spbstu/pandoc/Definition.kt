@@ -73,10 +73,18 @@ sealed class Inline {
 
 enum class Alignment{ AlignLeft, AlignRight, AlignCenter, AlignDefault }
 typealias ListAttributes = Tuple3<Int, ListNumberStyle, ListNumberDelim>
+val ListAttributes.level inline get() = v0
+val ListAttributes.numberStyle inline get() = v1
+val ListAttributes.numberDelim inline get() = v2
+fun ListAttributes() = ListAttributes(0, ListNumberStyle.DefaultStyle, ListNumberDelim.DefaultDelim)
 enum class ListNumberStyle{ DefaultStyle, Example, Decimal, LowerRoman, UpperRoman, LowerAlpha, UpperAlpha }
 enum class ListNumberDelim{ DefaultDelim, Period, OneParen, TwoParens }
 data class Format(val format: String)
 typealias Attr = Tuple3<String, List<String>, List<Pair<String, String>>>
+val Attr.id inline get() = v0
+val Attr.classes inline get() = v1
+val Attr.properties inline get() = v2
+fun Attr() = Attr("", listOf(), listOf())
 typealias TableCell = List<Block>
 enum class QuoteType{ SingleQuote, DoubleQuote }
 typealias Target = Tuple2<String,String>
