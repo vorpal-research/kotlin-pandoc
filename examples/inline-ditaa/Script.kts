@@ -1,4 +1,8 @@
-package core
+#!/bin/env kscript
+
+@file:MavenRepository("jitpack.io","https://jitpack.io" )
+@file:DependsOn("com.github.stathissideris:ditaa:v0.11.0")
+@file:DependsOn("com.github.belyaev-mikhail:kotlin-pandoc:387770b")
 
 import org.stathissideris.ascii2image.core.ConversionOptions
 import org.stathissideris.ascii2image.core.RenderingOptions
@@ -6,16 +10,12 @@ import org.stathissideris.ascii2image.graphics.BitmapRenderer
 import org.stathissideris.ascii2image.graphics.Diagram
 import org.stathissideris.ascii2image.text.TextGrid
 import ru.spbstu.ktuples.Tuple
-import ru.spbstu.ktuples.Tuple3
-import ru.spbstu.pandoc.Block
-import ru.spbstu.pandoc.Inline
-import ru.spbstu.pandoc.PandocVisitor
-import ru.spbstu.pandoc.makeFilter
+import ru.spbstu.pandoc.*
 import java.io.File
 import java.util.*
 import javax.imageio.ImageIO
 
-fun main(args: Array<String>) = makeFilter(
+makeFilter(
         object : PandocVisitor() {
             override fun visit(b: Block.CodeBlock): Block {
                 if("ditaa" !in b.attr.v1) return super.visit(b)
@@ -29,20 +29,20 @@ fun main(args: Array<String>) = makeFilter(
                 ImageIO.write(BitmapRenderer().renderToImage(
                         diag, RenderingOptions()), "png",
                         File(tmpName))
-
+                                
                 return Block.Div(
-                    attr = Tuple("", listOf(), listOf()),
-                    contents = listOf(
-                        Block.Plain(
-                            inlines = listOf(
-                                    Inline.Image(
-                                            attr = Tuple3("", listOf(), listOf()),
-                                            altText = listOf(),
-                                            target = Tuple(tmpName, tmpName)
-                                    )
-                            )
+                        attr = Attr(),
+                        contents = listOf(
+                                Block.Plain(
+                                        inlines = listOf(
+                                                Inline.Image(
+                                                        attr = Attr(),
+                                                        altText = listOf(),
+                                                        target = Tuple(tmpName, tmpName)
+                                                )
+                                        )
+                                )
                         )
-                    )
                 )
 
             }

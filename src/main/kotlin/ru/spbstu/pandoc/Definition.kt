@@ -80,7 +80,7 @@ fun ListAttributes() = ListAttributes(0, ListNumberStyle.DefaultStyle, ListNumbe
 enum class ListNumberStyle{ DefaultStyle, Example, Decimal, LowerRoman, UpperRoman, LowerAlpha, UpperAlpha }
 enum class ListNumberDelim{ DefaultDelim, Period, OneParen, TwoParens }
 data class Format(val format: String)
-typealias Attr = Tuple3<String, List<String>, List<Pair<String, String>>>
+typealias Attr = Tuple3<String, List<String>, List<Tuple2<String, String>>>
 val Attr.id inline get() = v0
 val Attr.classes inline get() = v1
 val Attr.properties inline get() = v2
@@ -88,6 +88,7 @@ fun Attr() = Attr("", listOf(), listOf())
 typealias TableCell = List<Block>
 enum class QuoteType{ SingleQuote, DoubleQuote }
 typealias Target = Tuple2<String,String>
+fun Target(to: String) = Target(to, to)
 enum class MathType{ DisplayMath, InlineMath }
 data class Citation constructor(
         val citationId: String,
