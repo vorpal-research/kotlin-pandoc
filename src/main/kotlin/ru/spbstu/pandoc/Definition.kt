@@ -1,8 +1,8 @@
 package ru.spbstu.pandoc
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonProperty
 import ru.spbstu.ktuples.Tuple2
-import ru.spbstu.ktuples.Tuple3
 
 data class Pandoc constructor(
         val blocks: List<Block>,
@@ -70,27 +70,34 @@ sealed class Inline {
     data class Span(val attr: Attr, val contents: List<Inline>): Inline()
 }
 
-
 enum class Alignment{ AlignLeft, AlignRight, AlignCenter, AlignDefault }
-typealias ListAttributes = Tuple3<Int, ListNumberStyle, ListNumberDelim>
-val ListAttributes.level inline get() = v0
-val ListAttributes.numberStyle inline get() = v1
-val ListAttributes.numberDelim inline get() = v2
-fun ListAttributes() = ListAttributes(0, ListNumberStyle.DefaultStyle, ListNumberDelim.DefaultDelim)
+@JsonFormat(shape = JsonFormat.Shape.ARRAY)
+data class ListAttributes(
+    val level: Int = 0,
+    val numberStyle: ListNumberStyle = ListNumberStyle.DefaultStyle,
+    val numberDelim: ListNumberDelim = ListNumberDelim.DefaultDelim
+)
 enum class ListNumberStyle{ DefaultStyle, Example, Decimal, LowerRoman, UpperRoman, LowerAlpha, UpperAlpha }
 enum class ListNumberDelim{ DefaultDelim, Period, OneParen, TwoParens }
 data class Format(val format: String)
-typealias Attr = Tuple3<String, List<String>, List<Tuple2<String, String>>>
-val Attr.id inline get() = v0
-val Attr.classes inline get() = v1
-val Attr.properties inline get() = v2
-fun Attr() = Attr("", listOf(), listOf())
+@JsonFormat(shape = JsonFormat.Shape.ARRAY)
+data class Attr(
+        val id: String = "",
+        val classes: List<String> = listOf(),
+        val properties: List<Tuple2<String, String>> = listOf()
+) {
+    fun propertiesMap(): Map<String, String> {
+        val map = mutableMapOf<String, String>()
+        properties.forEach { (k, v) -> map[k] = v }
+        return map
+    }
+}
 typealias TableCell = List<Block>
 enum class QuoteType{ SingleQuote, DoubleQuote }
 typealias Target = Tuple2<String,String>
 fun Target(to: String) = Target(to, to)
 enum class MathType{ DisplayMath, InlineMath }
-data class Citation constructor(
+data class Citation(
         val citationId: String,
         val citationPrefix: List<Inline>,
         val citationSuffix: List<Inline>,

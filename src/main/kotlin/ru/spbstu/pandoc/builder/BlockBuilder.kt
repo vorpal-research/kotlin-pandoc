@@ -5,7 +5,6 @@ import ru.spbstu.pandoc.Attr
 import ru.spbstu.pandoc.Block
 import ru.spbstu.pandoc.Format
 import ru.spbstu.pandoc.ListAttributes
-import kotlin.properties.Delegates
 
 sealed class BlockBuilderBase {
     private val list: MutableList<Block> = mutableListOf()
