@@ -2,7 +2,7 @@
 
 @file:MavenRepository("jitpack.io","https://jitpack.io" )
 @file:DependsOn("com.github.stathissideris:ditaa:v0.11.0")
-@file:DependsOn("com.github.belyaev-mikhail:kotlin-pandoc:387770b")
+@file:DependsOn("com.github.belyaev-mikhail:kotlin-pandoc:3ce5ef6")
 
 import org.stathissideris.ascii2image.core.ConversionOptions
 import org.stathissideris.ascii2image.core.RenderingOptions
@@ -29,7 +29,7 @@ makeFilter(
                 ImageIO.write(BitmapRenderer().renderToImage(
                         diag, RenderingOptions()), "png",
                         File(tmpName))
-                                
+
                 return Block.Div(
                         attr = Attr(),
                         contents = listOf(
