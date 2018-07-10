@@ -1,6 +1,6 @@
 # Hello
 
-```ditaa
+```{ .ditaa alt-text="The best diagram evar" format="svg" }
     +--------+   +-------+    +-------+
     |        | --+ ditaa +--> |       |
     |  Text  |   +-------+    |diagram|
