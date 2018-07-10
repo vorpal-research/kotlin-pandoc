@@ -19,7 +19,10 @@ fun constructObjectMapper(): ObjectMapper {
             MetaValue::class,
             CitationMode::class,
             MathType::class,
-            QuoteType::class
+            QuoteType::class,
+            ListNumberStyle::class,
+            ListNumberDelim::class,
+            Alignment::class
     )
 
     val module: SimpleModule = SimpleModule()
