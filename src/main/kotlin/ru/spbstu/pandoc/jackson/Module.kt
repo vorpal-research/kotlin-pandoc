@@ -6,10 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import ru.spbstu.ktuples.jackson.KTuplesModule
-import ru.spbstu.pandoc.Block
-import ru.spbstu.pandoc.CitationMode
-import ru.spbstu.pandoc.Inline
-import ru.spbstu.pandoc.MetaValue
+import ru.spbstu.pandoc.*
 import java.io.File
 import java.io.InputStream
 import java.io.Reader
@@ -21,10 +18,12 @@ fun constructObjectMapper(): ObjectMapper {
             .addSerializer(PandocSerializer(Block::class))
             .addSerializer(PandocSerializer(MetaValue::class))
             .addSerializer(PandocSerializer(CitationMode::class))
+            .addSerializer(PandocSerializer(MathType::class))
             .addDeserializer(Inline::class.java, PandocDeserializer(Inline::class))
             .addDeserializer(Block::class.java, PandocDeserializer(Block::class))
             .addDeserializer(MetaValue::class.java, PandocDeserializer(MetaValue::class))
             .addDeserializer(CitationMode::class.java, PandocDeserializer(CitationMode::class))
+            .addDeserializer(MathType::class.java, PandocDeserializer(MathType::class))
 
     return ObjectMapper().registerModule(KotlinModule())
             .registerModule(KTuplesModule())
