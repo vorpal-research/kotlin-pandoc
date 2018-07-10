@@ -13,17 +13,20 @@ import java.io.Reader
 import java.net.URL
 
 fun constructObjectMapper(): ObjectMapper {
-    val module: Module = SimpleModule()
-            .addSerializer(PandocSerializer(Inline::class))
-            .addSerializer(PandocSerializer(Block::class))
-            .addSerializer(PandocSerializer(MetaValue::class))
-            .addSerializer(PandocSerializer(CitationMode::class))
-            .addSerializer(PandocSerializer(MathType::class))
-            .addDeserializer(Inline::class.java, PandocDeserializer(Inline::class))
-            .addDeserializer(Block::class.java, PandocDeserializer(Block::class))
-            .addDeserializer(MetaValue::class.java, PandocDeserializer(MetaValue::class))
-            .addDeserializer(CitationMode::class.java, PandocDeserializer(CitationMode::class))
-            .addDeserializer(MathType::class.java, PandocDeserializer(MathType::class))
+    val classes = listOf(
+            Inline::class,
+            Block::class,
+            MetaValue::class,
+            CitationMode::class,
+            MathType::class,
+            QuoteType::class
+    )
+
+    val module: SimpleModule = SimpleModule()
+    classes.forEach {
+        module.addSerializer(PandocSerializer(it))
+                .addDeserializer(it.java as Class<Any>, PandocDeserializer(it))
+    }
 
     return ObjectMapper().registerModule(KotlinModule())
             .registerModule(KTuplesModule())

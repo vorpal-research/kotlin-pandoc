@@ -19,8 +19,13 @@ class PandocSerializer<T: Any>(val clazz: KClass<T>) : StdSerializer<T>(clazz.ja
         }
 
     override fun serialize(value: T, gen: JsonGenerator, sp: SerializerProvider) {
+        val desc = when {
+            clazz.java.isEnum -> "$value"
+            else -> value::class.simpleName
+        }
+
         gen.writeStartObject()
-        gen.writeStringField("t", value::class.simpleName)
+        gen.writeStringField("t", desc)
         val props = value::class.sortedProperties as Collection<KProperty1<T, Any?>>
         when {
             props.isEmpty() -> {}

@@ -96,13 +96,7 @@ typealias TableCell = List<Block>
 enum class QuoteType{ SingleQuote, DoubleQuote }
 typealias Target = Tuple2<String,String>
 fun Target(to: String) = Target(to, to)
-sealed class MathType {
-    override fun toString() = this::class.simpleName!!
-
-    // this poor man's enum is here because that's how it works in pandoc
-    object DisplayMath : MathType()
-    object InlineMath : MathType()
-}
+enum class MathType { DisplayMath, InlineMath }
 data class Citation(
         val citationId: String,
         val citationPrefix: List<Inline>,
@@ -111,11 +105,4 @@ data class Citation(
         val citationNoteNum: Int,
         val citationHash: Int
 )
-sealed class CitationMode {
-    override fun toString() = this::class.simpleName!!
-
-    // this poor man's enum is here because that's how it works in pandoc
-    object AuthorInText : CitationMode()
-    object SuppressAuthor : CitationMode()
-    object NormalCitation : CitationMode()
-}
+enum class CitationMode { AuthorInText, SuppressAuthor, NormalCitation }

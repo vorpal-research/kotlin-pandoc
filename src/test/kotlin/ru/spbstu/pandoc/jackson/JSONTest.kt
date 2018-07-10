@@ -37,7 +37,7 @@ class ModelTest {
                 """
                     {
                       "t": "Quoted",
-                      "c": ["SingleQuote", [{ "t": "Str", "c": "Hello" }]]
+                      "c": [{ "t": "SingleQuote" }, [{ "t": "Str", "c": "Hello" }]]
                     }
                     """
         )

@@ -77,13 +77,19 @@ class PandocDeserializer<T : Any>(val clazz: KClass<T>) : StdDeserializer<T>(cla
 
         // there is tag, but no content => it's probably a property-less object, just try parsing it as-is
         if (result == null && tag != null) {
+            when {
+                clazz.java.isEnum -> result = readEnumContents(tag)
             // there is nothing left to read in parser, but this should not read anything anyway
-            result = readClassContents(tag, parser)
+                else -> result = readClassContents(tag, parser)
+            }
         }
 
         result ?: throw IllegalArgumentException()
         return result
     }
+
+    private fun readEnumContents(tag: String): T =
+            requireNotNull(clazz.java.enumConstants.find { "$it" == tag })
 
     private fun readClassContents(tag: String, parser: JsonParser): T {
         val codec = parser.codec
