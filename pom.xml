@@ -67,6 +67,13 @@
     </dependencies>
 
     <build>
+        <sourceDirectory>
+            src/main/kotlin
+        </sourceDirectory>
+        <testSourceDirectory>
+            src/test/kotlin
+        </testSourceDirectory>
+
         <plugins>
 
             <plugin>
@@ -80,20 +87,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <!-- for file package/Main.kt -->
-                            <mainClass>package.MainKt</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
             </plugin>
 
             <plugin>
@@ -138,9 +131,17 @@
     <repositories>
         <repository>
             <id>bintray-vorpal-research-kotlin-maven</id>
-            <name>bintray</name>
             <url>https://dl.bintray.com/vorpal-research/kotlin-maven</url>
         </repository>
     </repositories>
+
+
+    <distributionManagement>
+        <repository>
+            <id>bintray-vorpal-research-kotlin-maven</id>
+            <name>vorpal-research-kotlin-maven</name>
+            <url>https://api.bintray.com/maven/vorpal-research/kotlin-maven/${project.artifactId}/;publish=1</url>
+        </repository>
+    </distributionManagement>
 
 </project>
