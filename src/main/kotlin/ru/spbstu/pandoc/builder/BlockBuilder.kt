@@ -6,6 +6,7 @@ import ru.spbstu.pandoc.Block
 import ru.spbstu.pandoc.Format
 import ru.spbstu.pandoc.ListAttributes
 
+@BuilderMarker
 sealed class BlockBuilderBase {
     private val list: MutableList<Block> = mutableListOf()
     fun build(): List<Block> = list
@@ -39,8 +40,10 @@ sealed class BlockBuilderBase {
         builder.items()
         list += Block.BulletList(builder.build())
     }
-    fun definitionList(): Block.DefinitionList {
-        list += TODO() as Block.DefinitionList
+    fun definitionList(body: DefinitionListBuilder.() -> Unit) {
+        val builder = DefinitionListBuilder()
+        builder.body()
+        list += Block.DefinitionList(builder.build())
     }
     fun header(level: Int, text: InlineBuilderWithAttrs.() -> Unit) {
         val builderWithAttrs = InlineBuilderWithAttrs()
@@ -50,8 +53,10 @@ sealed class BlockBuilderBase {
     fun hrule() {
         list += Block.HorizontalRule
     }
-    fun table(): Block.Table {
-        list += TODO() as Block.Table
+    fun table(body: TableBuilder.() -> Unit) {
+        val builder = TableBuilder()
+        builder.body()
+        list += builder.build()
     }
     fun div(body: BlockBuilderWithAtts.() -> Unit) {
         val builder = BlockBuilderWithAtts()

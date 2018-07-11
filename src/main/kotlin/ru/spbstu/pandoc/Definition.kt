@@ -19,6 +19,15 @@ sealed class MetaValue {
     data class MetaBlocks(val value: List<Block>): MetaValue()
 }
 
+val Pandoc.title: List<Inline>?
+    get(): List<Inline>? {
+        val metaTitle = meta["title"]
+        return when(metaTitle) {
+            is MetaValue.MetaInlines -> metaTitle.value
+            else -> null
+        }
+    }
+
 sealed class Block {
     override fun toString() = this::class.simpleName!!
 

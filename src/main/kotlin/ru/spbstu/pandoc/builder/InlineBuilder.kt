@@ -4,6 +4,7 @@ import ru.spbstu.ktuples.Tuple2
 import ru.spbstu.pandoc.*
 import ru.spbstu.pandoc.Target
 
+@BuilderMarker
 sealed class InlineBuilderBase {
     private val list: MutableList<Inline> = mutableListOf()
     fun build(): List<Inline> = list

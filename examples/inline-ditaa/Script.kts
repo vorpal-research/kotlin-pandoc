@@ -2,7 +2,7 @@
 
 @file:MavenRepository("jitpack.io","https://jitpack.io" )
 @file:DependsOn("com.github.stathissideris:ditaa:v0.11.0")
-@file:DependsOn("com.github.belyaev-mikhail:kotlin-pandoc:fa893b6")
+@file:DependsOn("com.github.belyaev-mikhail:kotlin-pandoc:25107d0")
 
 import org.stathissideris.ascii2image.core.ConversionOptions
 import org.stathissideris.ascii2image.core.RenderingOptions
