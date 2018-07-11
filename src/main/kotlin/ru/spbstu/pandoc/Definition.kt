@@ -28,19 +28,23 @@ val Pandoc.title: List<Inline>?
         }
     }
 
+interface Attributes {
+    val attr: Attr
+}
+
 sealed class Block {
     override fun toString() = this::class.simpleName!!
 
     data class Plain(val inlines: List<Inline>): Block()
     data class Para(val inlines: List<Inline>): Block()
     data class LineBlock(val inlines: List<List<Inline>>): Block()
-    data class CodeBlock(val attr: Attr, val text: String): Block()
+    data class CodeBlock(override val attr: Attr, val text: String): Block(), Attributes
     data class RawBlock(val format: Format, val text: String): Block()
     data class BlockQuote(val blocks: List<Block>): Block()
     data class OrderedList(val attributes: ListAttributes, val items: List<List<Block>>): Block()
     data class BulletList(val items: List<List<Block>>): Block()
     data class DefinitionList(val items: List<DefinitionItem>): Block()
-    data class Header(val level: Int, val attr: Attr, val text: List<Inline>): Block()
+    data class Header(val level: Int, override val attr: Attr, val text: List<Inline>): Block(), Attributes
     object HorizontalRule: Block()
     data class Table(
             val caption: List<Inline>,
@@ -49,7 +53,7 @@ sealed class Block {
             val columnHeaders: List<TableCell>,
             val rows: List<List<TableCell>>
     ): Block()
-    data class Div(val attr: Attr, val contents: List<Block>): Block()
+    data class Div(override val attr: Attr, val contents: List<Block>): Block(), Attributes
     object Null: Block()
 }
 
@@ -67,16 +71,16 @@ sealed class Inline {
     data class SmallCaps(val contents: List<Inline>): Inline()
     data class Quoted(val type: QuoteType, val contents: List<Inline>): Inline()
     data class Cite(val citation: List<Citation>, val contents: List<Inline>): Inline()
-    data class Code(val attr: Attr, val text: String): Inline()
+    data class Code(override val attr: Attr, val text: String): Inline(), Attributes
     object Space: Inline()
     object SoftBreak: Inline()
     object LineBreak: Inline()
     data class Math(val type: MathType, val text: String): Inline()
     data class RawInline(val format: Format, val text: String): Inline()
-    data class Link(val attr: Attr, val contents: List<Inline>, val target: Target): Inline()
-    data class Image(val attr: Attr, val altText: List<Inline>, val target: Target): Inline()
+    data class Link(override val attr: Attr, val contents: List<Inline>, val target: Target): Inline(), Attributes
+    data class Image(override val attr: Attr, val altText: List<Inline>, val target: Target): Inline(), Attributes
     data class Note(val blocks: List<Block>): Inline()
-    data class Span(val attr: Attr, val contents: List<Inline>): Inline()
+    data class Span(override val attr: Attr, val contents: List<Inline>): Inline(), Attributes
 }
 
 enum class Alignment{ AlignLeft, AlignRight, AlignCenter, AlignDefault }
