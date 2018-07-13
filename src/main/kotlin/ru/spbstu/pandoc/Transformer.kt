@@ -1,5 +1,7 @@
 package ru.spbstu.pandoc
 
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.fasterxml.jackson.module.kotlin.readValue
 import ru.spbstu.pandoc.jackson.constructObjectMapper
 import java.io.*
 
@@ -28,6 +30,8 @@ open class PandocVisitor {
     open fun visit(b: Block.Div): Block = b.accept(this)
     open fun visit(b: Block.Null): Block = b.accept(this)
 
+    open fun visit(bs: List<Block>, token: Block? = null) = bs.accept(this)
+
     open fun visit(di: DefinitionItem): DefinitionItem = di.accept(this)
 
     open fun visit(i: Inline): Inline = i.accept(this)
@@ -51,6 +55,8 @@ open class PandocVisitor {
     open fun visit(i: Inline.Note): Inline = i.accept(this)
     open fun visit(i: Inline.Span): Inline = i.accept(this)
 
+    open fun visit(iis: List<Inline>, token: Inline? = null) = iis.accept(this)
+
     open fun visit(c: Citation): Citation = c.accept(this)
 
     open fun visit(doc: Pandoc): Pandoc = doc.accept(this)
@@ -72,8 +78,8 @@ fun MetaValue.MetaList.accept(visitor: PandocVisitor) =
         copy(list = list.map { visitor.visit(it) })
 fun MetaValue.MetaBool.accept(visitor: PandocVisitor) = this
 fun MetaValue.MetaString.accept(visitor: PandocVisitor) = this
-fun MetaValue.MetaInlines.accept(visitor: PandocVisitor) = copy(value = value.accept(visitor))
-fun MetaValue.MetaBlocks.accept(visitor: PandocVisitor) = copy(value = value.accept(visitor))
+fun MetaValue.MetaInlines.accept(visitor: PandocVisitor) = copy(value = visitor.visit(value))
+fun MetaValue.MetaBlocks.accept(visitor: PandocVisitor) = copy(value = visitor.visit(value))
 
 @JvmName("acceptBlocks")
 fun List<Block>.accept(visitor: PandocVisitor): List<Block> =
@@ -97,30 +103,30 @@ fun Block.accept(visitor: PandocVisitor): Block {
     }
 }
 
-fun Block.Plain.accept(visitor: PandocVisitor): Block = copy(inlines = inlines.accept(visitor))
-fun Block.Para.accept(visitor: PandocVisitor): Block = copy(inlines = inlines.accept(visitor))
-fun Block.LineBlock.accept(visitor: PandocVisitor): Block = copy(inlines = inlines.map { it.accept(visitor) })
+fun Block.Plain.accept(visitor: PandocVisitor): Block = copy(inlines = visitor.visit(inlines))
+fun Block.Para.accept(visitor: PandocVisitor): Block = copy(inlines = visitor.visit(inlines))
+fun Block.LineBlock.accept(visitor: PandocVisitor): Block = copy(inlines = inlines.map { visitor.visit(it) })
 fun Block.CodeBlock.accept(visitor: PandocVisitor): Block = this
 fun Block.RawBlock.accept(visitor: PandocVisitor): Block = this
-fun Block.BlockQuote.accept(visitor: PandocVisitor): Block = copy(blocks = blocks.accept(visitor))
-fun Block.OrderedList.accept(visitor: PandocVisitor): Block = copy(items = items.map { it.accept(visitor) })
-fun Block.BulletList.accept(visitor: PandocVisitor): Block = copy(items = items.map { it.accept(visitor) })
+fun Block.BlockQuote.accept(visitor: PandocVisitor): Block = copy(blocks = visitor.visit(blocks))
+fun Block.OrderedList.accept(visitor: PandocVisitor): Block = copy(items = items.map { visitor.visit(it) })
+fun Block.BulletList.accept(visitor: PandocVisitor): Block = copy(items = items.map { visitor.visit(it) })
 fun Block.DefinitionList.accept(visitor: PandocVisitor): Block = copy(items = items.map { visitor.visit(it) })
-fun Block.Header.accept(visitor: PandocVisitor): Block = copy(text = text.accept(visitor))
+fun Block.Header.accept(visitor: PandocVisitor): Block = copy(text = visitor.visit(text))
 fun Block.HorizontalRule.accept(visitor: PandocVisitor): Block = this
 fun Block.Table.accept(visitor: PandocVisitor): Block =
         copy(
                 caption = caption.accept(visitor),
-                columnHeaders = columnHeaders.map { it.accept(visitor) },
-                rows = rows.map { it.map { it.accept(visitor) }}
+                columnHeaders = columnHeaders.map { visitor.visit(it) },
+                rows = rows.map { it.map { visitor.visit(it) }}
         )
-fun Block.Div.accept(visitor: PandocVisitor): Block = copy(contents = contents.accept(visitor))
+fun Block.Div.accept(visitor: PandocVisitor): Block = copy(contents = visitor.visit(contents))
 fun Block.Null.accept(visitor: PandocVisitor): Block = this
 
 fun DefinitionItem.accept(visitor: PandocVisitor): DefinitionItem =
         copy(
-                v0 = v0.accept(visitor),
-                v1 = v1.map { it.accept(visitor) }
+                v0 = visitor.visit(v0),
+                v1 = v1.map { visitor.visit(it) }
         )
 
 @JvmName("acceptInlines")
@@ -150,34 +156,34 @@ fun Inline.accept(visitor: PandocVisitor): Inline {
     }
 }
 fun Inline.Str.accept(visitor: PandocVisitor): Inline = this
-fun Inline.Emph.accept(visitor: PandocVisitor): Inline = copy(contents = contents.accept(visitor))
-fun Inline.Strong.accept(visitor: PandocVisitor): Inline = copy(contents = contents.accept(visitor))
-fun Inline.Strikeout.accept(visitor: PandocVisitor): Inline = copy(contents = contents.accept(visitor))
-fun Inline.Superscript.accept(visitor: PandocVisitor): Inline = copy(contents = contents.accept(visitor))
-fun Inline.Subscript.accept(visitor: PandocVisitor): Inline = copy(contents = contents.accept(visitor))
-fun Inline.SmallCaps.accept(visitor: PandocVisitor): Inline = copy(contents = contents.accept(visitor))
-fun Inline.Quoted.accept(visitor: PandocVisitor): Inline = copy(contents = contents.accept(visitor))
-fun Inline.Cite.accept(visitor: PandocVisitor): Inline = copy(contents = contents.accept(visitor), citation = citation.accept(visitor))
+fun Inline.Emph.accept(visitor: PandocVisitor): Inline = copy(contents = visitor.visit(contents))
+fun Inline.Strong.accept(visitor: PandocVisitor): Inline = copy(contents = visitor.visit(contents))
+fun Inline.Strikeout.accept(visitor: PandocVisitor): Inline = copy(contents = visitor.visit(contents))
+fun Inline.Superscript.accept(visitor: PandocVisitor): Inline = copy(contents = visitor.visit(contents))
+fun Inline.Subscript.accept(visitor: PandocVisitor): Inline = copy(contents = visitor.visit(contents))
+fun Inline.SmallCaps.accept(visitor: PandocVisitor): Inline = copy(contents = visitor.visit(contents))
+fun Inline.Quoted.accept(visitor: PandocVisitor): Inline = copy(contents = visitor.visit(contents))
+fun Inline.Cite.accept(visitor: PandocVisitor): Inline = copy(contents = visitor.visit(contents), citation = citation.accept(visitor))
 fun Inline.Code.accept(visitor: PandocVisitor): Inline = this
 fun Inline.Space.accept(visitor: PandocVisitor): Inline = this
 fun Inline.SoftBreak.accept(visitor: PandocVisitor): Inline = this
 fun Inline.LineBreak.accept(visitor: PandocVisitor): Inline = this
 fun Inline.Math.accept(visitor: PandocVisitor): Inline = this
 fun Inline.RawInline.accept(visitor: PandocVisitor): Inline = this
-fun Inline.Link.accept(visitor: PandocVisitor): Inline = copy(contents = contents.accept(visitor))
-fun Inline.Image.accept(visitor: PandocVisitor): Inline = copy(altText = altText.accept(visitor))
-fun Inline.Note.accept(visitor: PandocVisitor): Inline = copy(blocks = blocks.accept(visitor))
-fun Inline.Span.accept(visitor: PandocVisitor): Inline = copy(contents = contents.accept(visitor))
+fun Inline.Link.accept(visitor: PandocVisitor): Inline = copy(contents = visitor.visit(contents))
+fun Inline.Image.accept(visitor: PandocVisitor): Inline = copy(altText = visitor.visit(altText))
+fun Inline.Note.accept(visitor: PandocVisitor): Inline = copy(blocks = visitor.visit(blocks))
+fun Inline.Span.accept(visitor: PandocVisitor): Inline = copy(contents = visitor.visit(contents))
 
 fun List<Citation>.accept(visitor: PandocVisitor): List<Citation> = map { visitor.visit(it) }
 fun Citation.accept(visitor: PandocVisitor): Citation =
-        copy(citationPrefix = citationPrefix.accept(visitor),
-                citationSuffix = citationSuffix.accept(visitor))
+        copy(citationPrefix = visitor.visit(citationPrefix),
+                citationSuffix = visitor.visit(citationSuffix))
 
 fun Pandoc.accept(visitor: PandocVisitor): Pandoc =
         copy(
            meta = meta.mapValues { (_, v) -> visitor.visit(v) },
-           blocks = blocks.accept(visitor)
+           blocks = visitor.visit(blocks)
         )
 
 fun makeFilter(
@@ -187,7 +193,7 @@ fun makeFilter(
         needsClosing: Boolean = false
 ) {
     val om = constructObjectMapper()
-    val ii = om.readValue(input, Pandoc::class.java)
+    val ii = om.readValue<Pandoc>(input)
     val oo = visitor.visit(ii)
     om.writeValue(output, oo)
     if(needsClosing) {
