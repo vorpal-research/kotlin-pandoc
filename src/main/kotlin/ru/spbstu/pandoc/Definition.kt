@@ -28,6 +28,30 @@ val Pandoc.title: List<Inline>?
         }
     }
 
+val Pandoc.date: List<Inline>?
+    get(): List<Inline>? {
+        val metaDate = meta["date"]
+        return when(metaDate) {
+            is MetaValue.MetaInlines -> metaDate.value
+            else -> null
+        }
+    }
+
+val Pandoc.authors: List<List<Inline>>?
+    get(): List<List<Inline>>? {
+        val metaAuthor = meta["author"]
+        return when(metaAuthor) {
+            is MetaValue.MetaList -> metaAuthor.list.mapNotNull {
+                when(it) {
+                    is MetaValue.MetaInlines -> it.value
+                    else -> null
+                }
+            }
+            is MetaValue.MetaInlines -> listOf(metaAuthor.value)
+            else -> null
+        }
+    }
+
 interface Attributes {
     val attr: Attr
 }
