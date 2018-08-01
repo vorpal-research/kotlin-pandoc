@@ -3,7 +3,7 @@
 @file:MavenRepository("jitpack.io","https://jitpack.io" )
 @file:MavenRepository("bintray-vorpal-research-kotlin-maven","https://dl.bintray.com/vorpal-research/kotlin-maven" )
 @file:DependsOn("com.github.stathissideris:ditaa:v0.11.0")
-@file:DependsOn("ru.spbstu:kotlin-pandoc:0.0.3")
+@file:DependsOn("ru.spbstu:kotlin-pandoc:0.0.4")
 
 import org.stathissideris.ascii2image.core.ConversionOptions
 import org.stathissideris.ascii2image.core.RenderingOptions

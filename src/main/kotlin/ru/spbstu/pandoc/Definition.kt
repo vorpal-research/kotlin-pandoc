@@ -1,7 +1,6 @@
 package ru.spbstu.pandoc
 
-import com.fasterxml.jackson.annotation.JsonFormat
-import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.*
 import ru.spbstu.ktuples.Tuple2
 
 data class Pandoc constructor(
@@ -116,7 +115,7 @@ data class ListAttributes(
 )
 enum class ListNumberStyle{ DefaultStyle, Example, Decimal, LowerRoman, UpperRoman, LowerAlpha, UpperAlpha }
 enum class ListNumberDelim{ DefaultDelim, Period, OneParen, TwoParens }
-data class Format(val format: String)
+data class Format @JsonCreator(mode = JsonCreator.Mode.DELEGATING) constructor(@JsonValue val format: String)
 @JsonFormat(shape = JsonFormat.Shape.ARRAY)
 data class Attr(
         val id: String = "",
