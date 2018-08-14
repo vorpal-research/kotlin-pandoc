@@ -1,9 +1,11 @@
 package ru.spbstu.pandoc
 
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.fasterxml.jackson.module.kotlin.readValue
 import ru.spbstu.pandoc.jackson.constructObjectMapper
-import java.io.*
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.io.Reader
+import java.io.Writer
 
 open class PandocVisitor {
     open fun visit(v: MetaValue): MetaValue = v.accept(this)
