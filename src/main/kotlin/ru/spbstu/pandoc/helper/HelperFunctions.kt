@@ -1,5 +1,6 @@
 package ru.spbstu.pandoc.helper
 
+import kotlinx.Warnings
 import ru.spbstu.pandoc.*
 
 internal class ToStringVisitor : PandocVisitor() {
@@ -88,14 +89,15 @@ fun List<Block>.getContentsAsText(): String {
     return visitor.builder.toString()
 }
 
-fun Attributes.copy(attr: Attr = this.attr) = when(this) {
-    is Block.CodeBlock -> copy(attr = attr)
-    is Block.Div -> copy(attr = attr)
-    is Block.Header -> copy(attr = attr)
-    is Inline.Code -> copy(attr = attr)
-    is Inline.Image -> copy(attr = attr)
-    is Inline.Link -> copy(attr = attr)
-    is Inline.Span -> copy(attr = attr)
+@Suppress(Warnings.UNCHECKED_CAST)
+fun <T: Attributes> T.copy(attr: Attr = this.attr): T = when(this) {
+    is Block.CodeBlock -> copy(attr = attr) as T
+    is Block.Div -> copy(attr = attr) as T
+    is Block.Header -> copy(attr = attr) as T
+    is Inline.Code -> copy(attr = attr) as T
+    is Inline.Image -> copy(attr = attr) as T
+    is Inline.Link -> copy(attr = attr) as T
+    is Inline.Span -> copy(attr = attr) as T
 
     else -> throw Error("Unknown attributed class: ${this::class}")
 }
