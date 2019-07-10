@@ -40,8 +40,10 @@ sealed class InlineBuilderBase {
     fun cite() {
         list += TODO() as Inline.Cite
     }
-    fun code(attr: Attr = Attr(), text: () -> String) {
-        list += Inline.Code(attr, text())
+    fun code(text: AttributeBuilder.() -> String) {
+        val builder = AttributeBuilder()
+        val source = builder.text()
+        list += Inline.Code(builder.buildAttrs(), source)
     }
     fun space() {
         list += Inline.Space
@@ -58,11 +60,15 @@ sealed class InlineBuilderBase {
     fun rawInline(format: Format, text: () -> String) {
         list += Inline.RawInline(format, text())
     }
-    fun link(target: Target, attr: Attr = Attr(), contents: InlineBuilder.() -> Unit) {
-        list += Inline.Link(attr, inlines(contents), target)
+    fun link(target: Target, contents: InlineBuilderWithAttrs.() -> Unit = {}) {
+        val builder = InlineBuilderWithAttrs()
+        builder.contents()
+        list += Inline.Link(builder.buildAttrs(), builder.build(), target)
     }
-    fun image(target: Target, attr: Attr = Attr(), altText: InlineBuilder.() -> Unit = {}) {
-        list += Inline.Image(attr, inlines(altText), target)
+    fun image(target: Target, altText: InlineBuilderWithAttrs.() -> Unit = {}) {
+        val builder = InlineBuilderWithAttrs()
+        builder.altText()
+        list += Inline.Image(builder.buildAttrs(), builder.build(), target)
     }
     fun note(body: BlockBuilder.() -> Unit) {
         list += Inline.Note(blocks(body))
@@ -76,14 +82,7 @@ sealed class InlineBuilderBase {
 }
 
 class InlineBuilder: InlineBuilderBase()
-class InlineBuilderWithAttrs: InlineBuilderBase() {
-    var id: String = ""
-    var classes: List<String> = listOf()
-    var clazz: String get() = classes.first(); set(value) { classes = listOf(value) }
-    var properties: List<Tuple2<String, String>> = listOf()
-
-    fun buildAttrs(): Attr = Attr(id, classes, properties)
-}
+class InlineBuilderWithAttrs: InlineBuilderBase(), AttributeBuilder by AttributeBuilder()
 
 fun inlines(body: InlineBuilder.() -> Unit): List<Inline> {
     val builder = InlineBuilder()

@@ -5,6 +5,7 @@ import ru.spbstu.pandoc.Attr
 import ru.spbstu.pandoc.Block
 import ru.spbstu.pandoc.Format
 import ru.spbstu.pandoc.ListAttributes
+import ru.spbstu.pandoc.helper.getContentsAsText
 
 @BuilderMarker
 sealed class BlockBuilderBase {
@@ -21,8 +22,10 @@ sealed class BlockBuilderBase {
         val res = lines.map { inlines(it) }
         list += Block.LineBlock(res)
     }
-    fun codeBlock(attr: Attr = Attr(), codeBody: () -> String) {
-        list += Block.CodeBlock(attr = Attr(), text = codeBody())
+    fun codeBlock(codeBody: AttributeBuilder.() -> String) {
+        val builder = AttributeBuilder()
+        val text = builder.codeBody()
+        list += Block.CodeBlock(attr = builder.buildAttrs(), text = text)
     }
     fun rawBlock(format: Format, text: () -> String) {
         list += Block.RawBlock(format, text())
@@ -48,7 +51,16 @@ sealed class BlockBuilderBase {
     fun header(level: Int, text: InlineBuilderWithAttrs.() -> Unit) {
         val builderWithAttrs = InlineBuilderWithAttrs()
         builderWithAttrs.text()
-        list += Block.Header(level, builderWithAttrs.buildAttrs(), builderWithAttrs.build())
+        val contents = builderWithAttrs.build()
+        var attrs = builderWithAttrs.buildAttrs()
+        if(attrs.id.isBlank()) {
+            // for some reason it cannot be blank
+            attrs = attrs.copy(id = contents
+                    .getContentsAsText()
+                    .filter { it.isLetterOrDigit() }
+                    .toLowerCase().replace(" ", "-"))
+        }
+        list += Block.Header(level, attrs, contents)
     }
     fun hrule() {
         list += Block.HorizontalRule
@@ -71,14 +83,7 @@ sealed class BlockBuilderBase {
 
 class BlockBuilder: BlockBuilderBase() {}
 
-class BlockBuilderWithAtts: BlockBuilderBase() {
-    var id: String = ""
-    var classes: List<String> = listOf()
-    var clazz: String get() = classes.first(); set(value) { classes = listOf(value) }
-    var properties: List<Tuple2<String, String>> = listOf()
-
-    fun buildAttrs(): Attr = Attr(id, classes, properties)
-}
+class BlockBuilderWithAtts: BlockBuilderBase(), AttributeBuilder by AttributeBuilder()
 
 fun blocks(body: BlockBuilder.() -> Unit): List<Block> {
     val builder = BlockBuilder()

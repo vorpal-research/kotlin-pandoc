@@ -16,7 +16,7 @@ class BuilderTest {
                         Block.Plain(
                                 inlines = listOf(
                                         Inline.Image(
-                                                attr = Attr(),
+                                                attr = Attr(id = "img"),
                                                 altText = listOf(),
                                                 target = Target("image.png")
                                         )
@@ -29,7 +29,9 @@ class BuilderTest {
                 clazz = "special"
 
                 plain {
-                    image(Target("image.png"))
+                    image(Target("image.png")) {
+                        id = "img"
+                    }
                 }
             }
         }.first()
