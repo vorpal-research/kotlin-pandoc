@@ -169,7 +169,8 @@ data class Format @JsonCreator(mode = JsonCreator.Mode.DELEGATING) constructor(@
             "tei",
             "texinfo",
             "textile",
-            "zimwiki"
+            "zimwiki",
+            "tex" // not really a supported format, but used in raw blocks/inlines
         )
         val htmlFormats = setOf("html", "html4", "html5", "revealjs", "s5", "slideous", "slidy")
         val latexFormats = setOf("latex", "beamer")
