@@ -1,6 +1,9 @@
 package ru.spbstu.pandoc
 
-import com.fasterxml.jackson.annotation.*
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonValue
 import ru.spbstu.ktuples.Tuple2
 
 data class Pandoc constructor(
@@ -115,7 +118,75 @@ data class ListAttributes(
 )
 enum class ListNumberStyle{ DefaultStyle, Example, Decimal, LowerRoman, UpperRoman, LowerAlpha, UpperAlpha }
 enum class ListNumberDelim{ DefaultDelim, Period, OneParen, TwoParens }
-data class Format @JsonCreator(mode = JsonCreator.Mode.DELEGATING) constructor(@JsonValue val format: String)
+data class Format @JsonCreator(mode = JsonCreator.Mode.DELEGATING) constructor(@JsonValue val format: String) {
+    companion object {
+        val supportedFormats = setOf(
+            "asciidoc",
+            "beamer",
+            "commonmark",
+            "context",
+            "docbook",
+            "docbook4",
+            "docbook5",
+            "docx",
+            "dokuwiki",
+            "dzslides",
+            "epub",
+            "epub2",
+            "epub3",
+            "fb2",
+            "gfm",
+            "haddock",
+            "html",
+            "html4",
+            "html5",
+            "icml",
+            "jats",
+            "json",
+            "latex",
+            "man",
+            "markdown",
+            "markdown_github",
+            "markdown_mmd",
+            "markdown_phpextra",
+            "markdown_strict",
+            "mediawiki",
+            "ms",
+            "muse",
+            "native",
+            "odt",
+            "opendocument",
+            "opml",
+            "org",
+            "plain",
+            "pptx",
+            "revealjs",
+            "rst",
+            "rtf",
+            "s5",
+            "slideous",
+            "slidy",
+            "tei",
+            "texinfo",
+            "textile",
+            "zimwiki"
+        )
+        val htmlFormats = setOf("html", "html4", "html5", "revealjs", "s5", "slideous", "slidy")
+        val latexFormats = setOf("latex", "beamer")
+        val texFormats = latexFormats + "context"
+
+        val HTML = Format("html")
+        val TeX = Format("tex")
+    }
+
+    init {
+        check(format in supportedFormats) { "Format unsupported by pandoc: \"$format\"" }
+    }
+
+    fun isHTML() = format in htmlFormats
+    fun isLaTeX() = format in latexFormats
+    fun isTeX() = format in texFormats
+}
 @JsonFormat(shape = JsonFormat.Shape.ARRAY)
 data class Attr(
         val id: String = "",
