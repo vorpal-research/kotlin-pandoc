@@ -172,7 +172,7 @@ data class Format @JsonCreator(mode = JsonCreator.Mode.DELEGATING) constructor(@
             "zimwiki",
             "tex" // not really a supported format, but used in raw blocks/inlines
         )
-        val htmlFormats = setOf("html", "html4", "html5", "revealjs", "s5", "slideous", "slidy")
+        val htmlFormats = setOf("html", "html4", "html5", "revealjs", "s5", "slideous", "slidy", "epub", "epub2", "epub3")
         val latexFormats = setOf("latex", "beamer")
         val texFormats = latexFormats + "context"
 
