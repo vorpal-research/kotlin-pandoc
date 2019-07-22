@@ -11,7 +11,7 @@ class BuilderTest {
     fun testBuilderSimple() {
         val manual =
                 Block.Div(
-                attr = Attr("", listOf("special"), listOf()),
+                attr = Attr("", listOf("special")),
                 contents = listOf(
                         Block.Plain(
                                 inlines = listOf(

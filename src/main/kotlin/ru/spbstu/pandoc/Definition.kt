@@ -1,9 +1,6 @@
 package ru.spbstu.pandoc
 
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonFormat
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonValue
+import com.fasterxml.jackson.annotation.*
 import ru.spbstu.ktuples.Tuple2
 
 data class Pandoc constructor(
@@ -194,11 +191,8 @@ data class Attr(
         val classes: List<String> = listOf(),
         val properties: List<Tuple2<String, String>> = listOf()
 ) {
-    fun propertiesMap(): Map<String, String> {
-        val map = mutableMapOf<String, String>()
-        properties.forEach { (k, v) -> map[k] = v }
-        return map
-    }
+    @get:JsonIgnore
+    val propertiesMap by lazy { properties.associate { it.v0 to it.v1 } }
 }
 typealias TableCell = List<Block>
 enum class QuoteType{ SingleQuote, DoubleQuote }

@@ -69,11 +69,11 @@ class ModelTest {
                 """
                     {
                     "t": "Span",
-                    "c": [["Je;;", [], []], [{ "t": "Str", "c" : "hi"} ]]
+                    "c": [["Je;;", [], [["width", "80%"]]], [{ "t": "Str", "c" : "hi"} ]]
                     }
                 """
         )
-        assertEquals(Inline.Span(Attr("Je;;", listOf(), listOf()), listOf(Inline.Str("hi"))), link)
+        assertEquals(Inline.Span(Attr("Je;;", listOf(), listOf(Tuple("width", "80%"))), listOf(Inline.Str("hi"))), link)
     }
 
     @Test

@@ -1,6 +1,6 @@
 package ru.spbstu.pandoc.helper
 
-import kotlinx.Warnings
+import kotlinx.warnings.Warnings
 import ru.spbstu.pandoc.*
 
 internal class ToStringVisitor : PandocVisitor() {
