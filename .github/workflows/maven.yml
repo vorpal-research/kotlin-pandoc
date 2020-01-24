@@ -16,6 +16,6 @@ jobs:
       with:
         java-version: 1.8
     - name: Deploy with Maven
-      run: mvn deploy -Pdeploy-to-github -S .github/settings.xml
+      run: mvn deploy -Pdeploy-to-github -s .github/settings.xml
       env:
         PASSWORD: ${{github.token}}
