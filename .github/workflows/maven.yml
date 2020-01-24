@@ -1,4 +1,4 @@
-name: Java CI
+name: Java CD
 
 on: 
   release:
@@ -16,4 +16,4 @@ jobs:
       with:
         java-version: 1.8
     - name: Deploy with Maven
-      run: mvn -B deploy --file pom.xml -Dregistry=https://maven.pkg.github.com/belyaev-mikhail -Dtoken=${{secrets.GH_TOKEN}}
+      run: mvn deploy pom.xml -Dregistry=https://maven.pkg.github.com/belyaev-mikhail -Dtoken=${{github.token}}
