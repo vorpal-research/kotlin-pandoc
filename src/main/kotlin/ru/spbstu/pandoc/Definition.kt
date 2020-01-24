@@ -18,36 +18,29 @@ sealed class MetaValue {
     data class MetaBlocks(val value: List<Block>): MetaValue()
 }
 
-val Pandoc.title: List<Inline>?
-    get(): List<Inline>? {
-        val metaTitle = meta["title"]
-        return when(metaTitle) {
-            is MetaValue.MetaInlines -> metaTitle.value
-            else -> null
-        }
+private fun MetaValue.extractInlines(): List<Inline>? = when(this) {
+    is MetaValue.MetaInlines -> value
+    is MetaValue.MetaString -> listOf(Inline.Str(value))
+    is MetaValue.MetaBlocks -> when(val firstBlock = value.singleOrNull()) {
+        is Block.Plain -> firstBlock.inlines
+        is Block.Para -> firstBlock.inlines
+        else -> null
     }
+    else -> null
+}
+
+val Pandoc.title: List<Inline>?
+    get(): List<Inline>? = meta["title"]?.extractInlines()
 
 val Pandoc.date: List<Inline>?
-    get(): List<Inline>? {
-        val metaDate = meta["date"]
-        return when(metaDate) {
-            is MetaValue.MetaInlines -> metaDate.value
-            else -> null
-        }
-    }
+    get(): List<Inline>? = meta["date"]?.extractInlines()
 
 val Pandoc.authors: List<List<Inline>>?
     get(): List<List<Inline>>? {
         val metaAuthor = meta["author"]
         return when(metaAuthor) {
-            is MetaValue.MetaList -> metaAuthor.list.mapNotNull {
-                when(it) {
-                    is MetaValue.MetaInlines -> it.value
-                    else -> null
-                }
-            }
-            is MetaValue.MetaInlines -> listOf(metaAuthor.value)
-            else -> null
+            is MetaValue.MetaList -> metaAuthor.list.mapNotNull { it.extractInlines() }
+            else -> metaAuthor?.extractInlines()?.let { listOf(it) }
         }
     }
 
