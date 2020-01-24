@@ -4,7 +4,7 @@
 
     <groupId>ru.spbstu</groupId>
     <artifactId>kotlin-pandoc</artifactId>
-    <version>0.0.8-SNAPSHOT</version>
+    <version>0.0.8</version>
     <scm>
         <url>https://github.com/belyaev-mikhail/kotlin-pandoc</url>
         <connection>scm:git:git@github.com:belyaev-mikhail/kotlin-pandoc.git</connection>
@@ -142,14 +142,30 @@
             <url>https://dl.bintray.com/vorpal-research/kotlin-maven</url>
         </repository>
     </repositories>
-
-
-    <distributionManagement>
-        <repository>
-            <id>bintray-vorpal-research-kotlin-maven</id>
-            <name>vorpal-research-kotlin-maven</name>
-            <url>https://api.bintray.com/maven/vorpal-research/kotlin-maven/${project.artifactId}/;publish=1</url>
-        </repository>
-    </distributionManagement>
+    <profiles>
+        <profile>
+            <id>deploy-to-bintray</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <distributionManagement>
+                <repository>
+                    <id>bintray-vorpal-research-kotlin-maven</id>
+                    <name>vorpal-research-kotlin-maven</name>
+                    <url>https://api.bintray.com/maven/vorpal-research/kotlin-maven/${project.artifactId}/;publish=1</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>deploy-to-github</id>
+            <distributionManagement>
+                <repository>
+                    <id>belyaev-mikhail-github</id>
+                    <name>belyaev-mikhail-github</name>
+                    <url>https://maven.pkg.github.com/belyaev-mikhail</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
 
 </project>
