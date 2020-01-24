@@ -160,8 +160,8 @@
             <id>deploy-to-github</id>
             <distributionManagement>
                 <repository>
-                    <id>belyaev-mikhail-github</id>
-                    <name>belyaev-mikhail-github</name>
+                    <id>github</id>
+                    <name>GitHub belyaev-mikhail Apache Maven Packages</name>
                     <url>https://maven.pkg.github.com/belyaev-mikhail</url>
                 </repository>
             </distributionManagement>
