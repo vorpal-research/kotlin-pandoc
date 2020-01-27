@@ -12,7 +12,7 @@
     </scm>
 
     <properties>
-        <kotlin.version>1.3.41</kotlin.version>
+        <kotlin.version>1.3.61</kotlin.version>
     </properties>
 
     <dependencies>
@@ -142,30 +142,13 @@
             <url>https://dl.bintray.com/vorpal-research/kotlin-maven</url>
         </repository>
     </repositories>
-    <profiles>
-        <profile>
-            <id>deploy-to-bintray</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <distributionManagement>
-                <repository>
-                    <id>bintray-vorpal-research-kotlin-maven</id>
-                    <name>vorpal-research-kotlin-maven</name>
-                    <url>https://api.bintray.com/maven/vorpal-research/kotlin-maven/${project.artifactId}/;publish=1</url>
-                </repository>
-            </distributionManagement>
-        </profile>
-        <profile>
-            <id>deploy-to-github</id>
-            <distributionManagement>
-                <repository>
-                    <id>github</id>
-                    <name>GitHub belyaev-mikhail Apache Maven Packages</name>
-                    <url>https://maven.pkg.github.com/belyaev-mikhail</url>
-                </repository>
-            </distributionManagement>
-        </profile>
-    </profiles>
+
+    <distributionManagement>
+        <repository>
+            <id>bintray-vorpal-research-kotlin-maven</id>
+            <name>vorpal-research-kotlin-maven</name>
+            <url>https://api.bintray.com/maven/vorpal-research/kotlin-maven/${project.artifactId}/;publish=1</url>
+        </repository>
+    </distributionManagement>
 
 </project>

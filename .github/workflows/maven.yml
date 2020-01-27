@@ -15,7 +15,8 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Deploy with Maven
-      run: mvn deploy -Pdeploy-to-github -s .github/settings.xml
+    - name: Deploy to Bintray
+      run: mvn deploy -s .github/bintray-settings.xml
       env:
-        PASSWORD: ${{github.token}}
+        BINTRAY_USERNAME: ${{secrets.bintray_username}}
+        BINTRAY_PASSWORD: ${{secrets.bintray_password}}
