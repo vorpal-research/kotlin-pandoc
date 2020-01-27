@@ -29,4 +29,5 @@ jobs:
       with:
         upload_url: ${{ github.event.release.upload_url }}
         asset_path: target/kotlin-pandoc-*.jar
-        asset_name: kotlin-pandoc-*.jar
+        asset_name: kotlin-pandoc-${{ github.event.release.tag_name }}.jar
+        asset_content_type: application/zip
