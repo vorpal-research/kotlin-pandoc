@@ -12,6 +12,9 @@ sealed class InlineBuilderBase {
     operator fun String.unaryPlus() {
         list += Inline.Str(this)
     }
+    operator fun Inline.unaryPlus() { list.add(this) }
+    operator fun Iterable<Inline>.unaryPlus() { list.addAll(this) }
+    operator fun Sequence<Inline>.unaryPlus() { list.addAll(this) }
 
     fun str(text: () -> String) {
         list += Inline.Str(text())
@@ -89,3 +92,5 @@ fun inlines(body: InlineBuilder.() -> Unit): List<Inline> {
     builder.body()
     return builder.build()
 }
+
+fun inline(body: InlineBuilder.() -> Unit): Inline = inlines(body).single()

@@ -12,6 +12,10 @@ sealed class BlockBuilderBase {
     private val list: MutableList<Block> = mutableListOf()
     fun build(): List<Block> = list
 
+    operator fun Block.unaryPlus() { list.add(this) }
+    operator fun Iterable<Block>.unaryPlus() { list.addAll(this) }
+    operator fun Sequence<Block>.unaryPlus() { list.addAll(this) }
+
     fun plain(body: InlineBuilder.() -> Unit) {
         list += Block.Plain(inlines(body))
     }
@@ -90,3 +94,5 @@ fun blocks(body: BlockBuilder.() -> Unit): List<Block> {
     builder.body()
     return builder.build()
 }
+
+fun block(body: BlockBuilder.() -> Unit): Block = blocks(body).single()
