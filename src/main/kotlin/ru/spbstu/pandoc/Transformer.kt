@@ -1,6 +1,7 @@
 package ru.spbstu.pandoc
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import kotlinx.warnings.Warnings
 import ru.spbstu.pandoc.jackson.constructObjectMapper
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
@@ -201,5 +202,63 @@ fun makeFilter(
     if(needsClosing) {
         input.close()
         output.close()
+    }
+}
+
+@JvmName("inlineVisitor")
+inline fun <reified T: Inline> pandocVisitor(crossinline body: PandocVisitor.(i: T) -> Inline) = object : PandocVisitor() {
+    override fun visit(i: Inline): Inline {
+        return when(i) {
+            is T -> this.body(i)
+            else -> super.visit(i)
+        }
+    }
+}
+
+@JvmName("blockVisitor")
+inline fun <reified T: Block> pandocVisitor(crossinline body: PandocVisitor.(i: T) -> Block) = object : PandocVisitor() {
+    override fun visit(b: Block): Block {
+        return when(b) {
+            is T -> this.body(b)
+            else -> super.visit(b)
+        }
+    }
+}
+
+@JvmName("metaVisitor")
+inline fun <reified T: MetaValue> pandocVisitor(crossinline body: PandocVisitor.(i: T) -> MetaValue) = object : PandocVisitor() {
+    override fun visit(v: MetaValue): MetaValue {
+        return when(v) {
+            is T -> this.body(v)
+            else -> super.visit(v)
+        }
+    }
+}
+
+@JvmName("attributesVisitor")
+inline fun <reified T: Attributes> pandocVisitor(crossinline body: PandocVisitor.(i: T) -> Any) = object : PandocVisitor() {
+    override fun visit(i: Inline): Inline {
+        return when(i) {
+            is T -> this.body(i) as Inline
+            else -> super.visit(i)
+        }
+    }
+
+    override fun visit(b: Block): Block {
+        return when(b) {
+            is T -> this.body(b) as Block
+            else -> super.visit(b)
+        }
+    }
+}
+
+@Suppress(Warnings.FINAL_UPPER_BOUND)
+@JvmName("docVisitor")
+inline fun <reified T: Pandoc> pandocVisitor(crossinline body: PandocVisitor.(i: T) -> Pandoc) = object : PandocVisitor() {
+    override fun visit(doc: Pandoc): Pandoc {
+        return when(doc) {
+            is T -> this.body(doc)
+            else -> super.visit(doc)
+        }
     }
 }
