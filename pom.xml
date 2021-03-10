@@ -63,7 +63,7 @@
         </dependency>
         <dependency>
             <groupId>ru.spbstu</groupId>
-            <artifactId>kotlinx-warnings</artifactId>
+            <artifactId>kotlinx-warnings-jvm</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
         <dependency>
