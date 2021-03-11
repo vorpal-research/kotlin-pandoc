@@ -4,7 +4,7 @@
 
     <groupId>ru.spbstu</groupId>
     <artifactId>kotlin-pandoc</artifactId>
-    <version>0.0.12-SNAPSHOT</version>
+    <version>0.0.13-SNAPSHOT</version>
     <scm>
         <url>https://github.com/belyaev-mikhail/kotlin-pandoc</url>
         <connection>scm:git:git@github.com:belyaev-mikhail/kotlin-pandoc.git</connection>
@@ -54,12 +54,12 @@
         <dependency>
             <groupId>ru.spbstu</groupId>
             <artifactId>ktuples</artifactId>
-            <version>0.0.1.11</version>
+            <version>0.0.2.2</version>
         </dependency>
         <dependency>
             <groupId>ru.spbstu</groupId>
             <artifactId>jackson-module-ktuples</artifactId>
-            <version>0.0.0.5</version>
+            <version>0.0.0.6</version>
         </dependency>
         <dependency>
             <groupId>ru.spbstu</groupId>
@@ -138,10 +138,6 @@
     </build>
 
     <repositories>
-        <repository>
-            <id>bintray-vorpal-research-kotlin-maven</id>
-            <url>https://dl.bintray.com/vorpal-research/kotlin-maven</url>
-        </repository>
         <repository>
             <id>github-vorpal-research-kotlin-maven</id>
             <url>https://vorpal-reseacher:&#x31;&#x30;&#x62;&#x37;&#x64;&#x66;&#x31;&#x32;&#x63;&#x64;&#x35;&#x34;&#x38;&#x37;&#x34;&#x65;&#x30;&#x34;&#x35;&#x35;&#x38;&#x31;&#x63;&#x39;&#x39;&#x62;&#x31;&#x66;&#x32;&#x30;&#x38;&#x65;&#x31;&#x61;&#x35;&#x33;&#x65;&#x36;&#x32;&#x38;@maven.pkg.github.com/vorpal-research/kotlin-maven</url>
