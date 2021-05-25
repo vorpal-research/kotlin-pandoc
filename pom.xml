@@ -140,7 +140,7 @@
     <repositories>
         <repository>
             <id>github-vorpal-research-kotlin-maven</id>
-            <url>https://vorpal-reseacher:&#x67;&#x68;&#x70;&#x5f;&#x46;&#x4a;&#x38;&#x67;&#x70;&#x67;&#x78;&#x49;&#x63;&#x33;&#x75;&#x78;&#x54;&#x32;&#x7a;&#x39;&#x6b;&#x4d;&#x61;&#x62;&#x4e;&#x58;&#x67;&#x33;&#x79;&#x72;&#x4c;&#x4a;&#x4f;&#x48;&#x32;&#x4f;&#x62;&#x64;&#x6a;&#x6c;@maven.pkg.github.com/vorpal-research/kotlin-maven</url>
+            <url>http://maven.vorpal-research.science</url>
         </repository>
     </repositories>
 
@@ -148,7 +148,7 @@
         <repository>
             <id>github-vorpal-research-kotlin-maven</id>
             <name>vorpal-research-kotlin-maven</name>
-            <url>https://maven.pkg.github.com/vorpal-research/kotlin-maven</url>
+            <url>http://maven-publish.vorpal-research.science</url>
         </repository>
     </distributionManagement>
 
