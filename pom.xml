@@ -140,7 +140,7 @@
     <repositories>
         <repository>
             <id>github-vorpal-research-kotlin-maven</id>
-            <url>http://maven.vorpal-research.science</url>
+            <url>https://maven.vorpal-research.science</url>
         </repository>
     </repositories>
 
@@ -148,7 +148,7 @@
         <repository>
             <id>github-vorpal-research-kotlin-maven</id>
             <name>vorpal-research-kotlin-maven</name>
-            <url>http://maven-publish.vorpal-research.science</url>
+            <url>https://maven.vorpal-research.science/publish</url>
         </repository>
     </distributionManagement>
 
