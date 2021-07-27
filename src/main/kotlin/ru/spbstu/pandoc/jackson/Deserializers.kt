@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import com.fasterxml.jackson.databind.type.TypeFactory
+import ru.spbstu.pandoc.*
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.declaredMemberProperties
@@ -20,10 +21,67 @@ private inline infix fun Int.times(body: () -> Unit) {
     }
 }
 
+fun <T: Any> any(kclass: KClass<T>): T = TODO()
+
+private val globalSubclassesMap: Map<KClass<*>, Set<KClass<*>>> = run {
+    val res = mutableMapOf<KClass<*>, Set<KClass<*>>>()
+    res[Inline::class] = setOf(
+        Inline.Cite::class,
+        Inline.Code::class,
+        Inline.Emph::class,
+        Inline.Image::class,
+        Inline.LineBreak::class,
+        Inline.Link::class,
+        Inline.Math::class,
+        Inline.Note::class,
+        Inline.Quoted::class,
+        Inline.RawInline::class,
+        Inline.SmallCaps::class,
+        Inline.SoftBreak::class,
+        Inline.Space::class,
+        Inline.Span::class,
+        Inline.Str::class,
+        Inline.Strikeout::class,
+        Inline.Strong::class,
+        Inline.Subscript::class,
+        Inline.Superscript::class,
+    )
+    res[Block::class] = setOf(
+        Block.BlockQuote::class,
+        Block.BulletList::class,
+        Block.CodeBlock::class,
+        Block.DefinitionList::class,
+        Block.Div::class,
+        Block.Header::class,
+        Block.HorizontalRule::class,
+        Block.LineBlock::class,
+        Block.Null::class,
+        Block.OrderedList::class,
+        Block.Para::class,
+        Block.Plain::class,
+        Block.RawBlock::class,
+        Block.Table::class,
+    )
+    res[MetaValue::class] = setOf(
+        MetaValue.MetaBlocks::class,
+        MetaValue.MetaBool::class,
+        MetaValue.MetaInlines::class,
+        MetaValue.MetaList::class,
+        MetaValue.MetaMap::class,
+        MetaValue.MetaString::class,
+    )
+    res
+}
+
+private fun <T: Any> KClass<T>.staticSealedSubclasses() = when {
+    java.isEnum -> setOf<KClass<out T>>()
+    else -> globalSubclassesMap[this] ?: sealedSubclasses
+}
+
 @Suppress("UNCHECKED_CAST")
 class PandocDeserializer<T : Any>(val clazz: KClass<T>) : StdDeserializer<T>(clazz.java) {
     val successors = clazz
-            .sealedSubclasses
+            .staticSealedSubclasses()
             .map { it.simpleName!! to (it as KClass<out T>) }
             .toMap()
 
