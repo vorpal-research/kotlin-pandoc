@@ -23,8 +23,7 @@ private inline infix fun Int.times(body: () -> Unit) {
 @Suppress("UNCHECKED_CAST")
 class PandocDeserializer<T : Any>(val clazz: KClass<T>) : StdDeserializer<T>(clazz.java) {
     val successors = clazz
-            .nestedClasses
-            .filter { it.isSubclassOf(clazz) }
+            .sealedSubclasses
             .map { it.simpleName!! to (it as KClass<out T>) }
             .toMap()
 

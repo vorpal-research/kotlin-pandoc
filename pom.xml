@@ -12,7 +12,7 @@
     </scm>
 
     <properties>
-        <kotlin.version>1.4.31</kotlin.version>
+        <kotlin.version>1.5.20</kotlin.version>
         <jackson.version>2.10.2</jackson.version>
     </properties>
 
