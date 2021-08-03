@@ -4,7 +4,6 @@ import ru.spbstu.pandoc.Block
 import ru.spbstu.pandoc.Format
 import ru.spbstu.pandoc.MetaValue
 import ru.spbstu.pandoc.Pandoc
-import ru.spbstu.pandoc.jackson.constructObjectMapper
 import java.io.File
 
 class PandocBuilder {

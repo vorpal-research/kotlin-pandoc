@@ -1,8 +1,10 @@
 package ru.spbstu.pandoc
 
-import com.fasterxml.jackson.module.kotlin.readValue
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.Json.Default.encodeToString
 import kotlinx.warnings.Warnings
-import ru.spbstu.pandoc.jackson.constructObjectMapper
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.io.Reader
@@ -195,10 +197,10 @@ fun makeFilter(
         output: Writer = OutputStreamWriter(System.out),
         needsClosing: Boolean = false
 ) {
-    val om = constructObjectMapper()
-    val ii = om.readValue<Pandoc>(input)
+
+    val ii = Json.decodeFromString<Pandoc>(input.readText())
     val oo = visitor.visit(ii)
-    om.writeValue(output, oo)
+    output.write(Json.encodeToString(oo))
     if(needsClosing) {
         input.close()
         output.close()
