@@ -1,3 +1,4 @@
+@file: OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
 package ru.spbstu.pandoc.kxserialization
 
 import kotlinx.serialization.KSerializer

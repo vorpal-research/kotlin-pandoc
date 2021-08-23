@@ -62,7 +62,7 @@ sealed class BlockBuilderBase {
             attrs = attrs.copy(id = contents
                     .getContentsAsText()
                     .filter { it.isLetterOrDigit() }
-                    .toLowerCase().replace(" ", "-"))
+                    .lowercase().replace(" ", "-"))
         }
         list += Block.Header(level, attrs, contents)
     }

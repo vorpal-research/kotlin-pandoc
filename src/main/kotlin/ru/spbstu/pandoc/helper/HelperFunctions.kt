@@ -90,14 +90,14 @@ fun List<Block>.getContentsAsText(): String {
 }
 
 @Suppress(Warnings.UNCHECKED_CAST)
-fun <T: Attributes> T.copy(attr: Attr = this.attr): T = when(this) {
-    is Block.CodeBlock -> copy(attr = attr) as T
-    is Block.Div -> copy(attr = attr) as T
-    is Block.Header -> copy(attr = attr) as T
-    is Inline.Code -> copy(attr = attr) as T
-    is Inline.Image -> copy(attr = attr) as T
-    is Inline.Link -> copy(attr = attr) as T
-    is Inline.Span -> copy(attr = attr) as T
-
-    else -> throw Error("Unknown attributed class: ${this::class}")
+fun <T: Attributes> T.copy(attr: Attr = this.attr): T = when(val sub: Attributes = this) {
+    is Block.CodeBlock -> sub.copy(attr) as T
+    is Block.Div -> sub.copy(attr = attr) as T
+    is Block.Header -> sub.copy(attr = attr) as T
+    is Inline.Code -> sub.copy(attr = attr) as T
+    is Inline.Image -> sub.copy(attr = attr) as T
+    is Inline.Link -> sub.copy(attr = attr) as T
+    is Inline.Span -> sub.copy(attr = attr) as T
 }
+
+

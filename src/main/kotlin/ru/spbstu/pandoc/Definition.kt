@@ -54,7 +54,7 @@ val Pandoc.authors: List<List<Inline>>?
         }
     }
 
-interface Attributes {
+sealed interface Attributes {
     val attr: Attr
 }
 

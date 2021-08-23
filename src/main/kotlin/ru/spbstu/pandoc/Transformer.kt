@@ -1,3 +1,4 @@
+@file: Suppress(Warnings.UNUSED_PARAMETER)
 package ru.spbstu.pandoc
 
 import kotlinx.serialization.decodeFromString
