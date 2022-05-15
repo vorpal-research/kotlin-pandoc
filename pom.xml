@@ -13,7 +13,7 @@
 
     <properties>
         <kotlin.version>1.5.20</kotlin.version>
-        <jackson.version>2.10.2</jackson.version>
+        <jackson.version>2.12.4</jackson.version>
     </properties>
 
     <dependencies>
